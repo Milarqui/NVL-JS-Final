@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8">
+   <title>Formulario</title>
+ </head>
+ <body>
+   <script>
+    var f = document.createElement("form");      //Crea el formulario
+    f.setAttribute('method',"post");             //Y asigna el método
+    function Nuevo() {                           //Crea un nuevo elemento
+     var lab0 = document.querySelector("#lab0"); //Lee los inputs
+     var lab1 = document.querySelector("#lab1");
+     var lab2 = document.querySelector("#lab2");
+     var tipo = document.querySelector("#Tipo"); //Lee el tipo de objeto a crear
+     var t = tipo.value;
+     var pHijo = document.createElement("p");    //Crea un párrafo nuevo para contener el elemento
+     pHijo.setAttribute("id","p_"+lab0.value);
+     if(t == 1) {                                //Opción para inputs de texto
+      var i = document.createElement("input");   //Input, seguido de identificador y tipo
+      i.setAttribute("id",lab0.value);
+      i.setAttribute("type","text");
+      var l = document.createElement("label");   //Etiqueta asociada al input
+      l.setAttribute("for",lab0.value);
+      l.innerText = lab0.value + " ";
+     }
+     else if(t == 2){                            //Opción para inputs numéricos
+      var i = document.createElement("input");   //Input, seguido de identificador y tipo
+      i.setAttribute("id",lab0.value);
+      i.setAttribute("type","numeric");
+      var l = document.createElement("label");   //Etiqueta asociada al input
+      l.setAttribute("for",lab0.value);
+      l.innerText = lab0.value + " ";
+     }
+     else if(t == 3) {                           //Opción para inputs de Correo electrónico
+      var i = document.createElement("input");   //Input, seguido de identificador y tipo
+      i.setAttribute("id",lab0.value);
+      i.setAttribute("type","text");
+      var l = document.createElement("label");   //Etiqueta asociada al input
+      l.setAttribute("for",lab0.value);
+      l.innerText = "Email ";
+     }
+     else if(t == 4) {                            //Opción para crear lista de elementos
+      var l = document.createElement("label");    //Etiqueta de la lista
+      l.setAttribute("for",lab0.value);
+      l.innerText = lab0.value + " ";
+      var i = document.createElement("select");   //Creación de lista
+      i.setAttribute("id",lab0.value);
+      var o = document.createElement("option");   //Primera opción de la lista, con su valor y su texto
+      o.setAttribute("value",lab2.value);
+      o.innerText = lab1.value;
+      i.appendChild(o);                           //Se añade la opción a la lista
+     }
+     else if(t == 5) {                            //Opción para crear opciones no exhaustivas (checkbox)
+      var l = document.createElement("label");    //Etiqueta del grupo
+      l.innerText = lab0.value + " ";
+      var i = document.createElement("input");    //Creación de input
+      i.setAttribute("name",lab0.value);
+      i.setAttribute("type","checkbox");          //Asignar tipo checkbox al input
+      i.setAttribute("value",lab2.value);
+      var l1 = document.createElement("label");   //Etiqueta asociada al input
+      l1.innerText = lab1.value;
+      l1.setAttribute("for",lab0.value + "_" + lab2.value);
+      l1.setAttribute("id","label_" + lab0.value + "_" + lab2.value);
+     }
+     else if(t == 6) {                            //Opción para crear opciones exhaustivas (radio)
+      var l = document.createElement("label");    //Etiqueta del grupo
+      l.innerText = lab0.value + " ";
+      var i = document.createElement("input");    //Creación de input
+      i.setAttribute("name",lab0.value);
+      i.setAttribute("type","radio");             //Asignar tipo radio al input
+      i.setAttribute("value",lab2.value);
+      var l1 = document.createElement("label");   //Etiqueta asociada al input
+      l1.innerText = lab1.value;
+      l1.setAttribute("for",lab0.value + "_" + lab2.value);
+      l1.setAttribute("id","label_" + lab0.value + "_" + lab2.value);
+     }
+     else if(t == 7) {                            //Opción para crear botón
+      var i = document.createElement("button");   //Creación de botón
+      i.setAttribute("id","Button");
+      i.innerText = lab0.value;
+     }
+     if(t < 7) {                                  //Se añade etiqueta previa para todos salvo el botón
+      pHijo.appendChild(l);
+     }
+     pHijo.appendChild(i);                        //Se añade el input
+     if(t==5 || t==6) {                           //Se añade la etiqueda de las opciones
+      pHijo.appendChild(l1);
+     }
+     f.appendChild(pHijo);                        //Se añade el objeto al archivo
+     document.getElementsByTagName('div')[0].appendChild(f);
+    }
+    function Borrar() {                           //Función para borrar un elemento
+     var lab0 = document.querySelector("#lab0");
+     var pHijo = document.getElementById("p_"+lab0.value);
+     pHijo.remove();
+    }
+    function Anadir() {                           //Función para añadir opciones a la lista o a opciones (no) exhaustivas
+     var lab0 = document.querySelector("#lab0");  //Tomamos el elemento concreto
+     var lab1 = document.querySelector("#lab1");
+     var lab2 = document.querySelector("#lab2");
+     var tipo = document.querySelector("#Tipo");
+     var pHijo = document.getElementById("p_"+lab0.value);
+     var t = tipo.value;
+     if(t < 4 || t > 6) {                         //Si no es un elemento que admita opciones, no lo hace
+       alert("Opcion incorrecta");
+     }
+     else if(t == 4) {                            //Añadir opciones a lista
+      var i = document.getElementById(lab0.value);
+      var o = document.createElement("option");
+      o.setAttribute("value",lab2.value);
+      o.innerText = lab1.value;
+      i.add(o);
+     }
+     else if(t == 5) {                            //Añadir opciones a opciones no exhaustivas
+      var o = document.createElement("input");
+      o.setAttribute("name",lab0.value);
+      o.setAttribute("id",lab0.value + "_" + lab2.value);
+      o.setAttribute("type","checkbox");
+      o.setAttribute("value",lab2.value);
+      var l = document.createElement("label");
+      l.innerText = lab1.value;
+      l.setAttribute("for",lab0.value + "_" + lab2.value);
+      l.setAttribute("id","label_" + lab0.value + "_" + lab2.value);
+      pHijo.appendChild(o);
+      pHijo.appendChild(l);
+     }
+     else if(t == 6) {                            //Añadir opciones a opciones exhaustivas
+      var o = document.createElement("input");
+      o.setAttribute("name",lab0.value);
+      o.setAttribute("id",lab0.value + "_" + lab2.value);
+      o.setAttribute("type","radio");
+      o.setAttribute("value",lab2.value);
+      var l = document.createElement("label");
+      l.innerText = lab1.value;
+      l.setAttribute("for",lab0.value + "_" + lab2.value);
+      l.setAttribute("id","label_" + lab0.value + "_" + lab2.value);
+      pHijo.appendChild(o);
+      pHijo.appendChild(l);
+     }
+    }
+    function Eliminar() {                         //Eliminar opciones
+     var lab0 = document.querySelector("#lab0");  //Tomamos el elemento concreto
+     var lab1 = document.querySelector("#lab1");
+     var lab2 = document.querySelector("#lab2");
+     var tipo = document.querySelector("#Tipo");
+     var pHijo = document.getElementById("p_"+lab0.value);
+     var t = tipo.value;
+     if(t < 4 || t > 6) {
+       alert("Opcion incorrecta");
+     }
+     else if(t == 4) {                            //Eliminar opciones de lista
+      var i = document.getElementById(lab0.value);
+      var len = i.options.length;
+      for (var j=0; j < len; j++) {
+       if(i.options[j].value == lab2.value) {
+        i.remove(j);
+        break;
+       }
+      }
+     }
+     else if(t == 5 || t == 6) {                  //Eliminar opciones (no) exhaustivas
+      var o = document.getElementById(lab0.value + "_" + lab2.value);
+      var l = document.getElementById("label_" + lab0.value + "_" + lab2.value);
+      pHijo.removeChild(o);
+      pHijo.removeChild(l);
+     }
+    }
+   </script>
+   <div id="tgtDiv">                              //Empieza el texto inicial
+    <label for="Tipo">Tipo de elemento</label>
+    <select id="Tipo">                            //Opciones para trabajar
+     <option value="1">Texto</option>
+     <option value="2">Número</option>
+     <option value="3">Email</option>
+     <option value="4">Lista</option>
+     <option value="5">Opciones no exclusivas</option>
+     <option value="6">Opciones exclusivas</option>
+     <option value="7">Botón</option>
+    </select>                                     //Debajo están los cuatro botones usados
+    <button id="Btn0" name="Btn0" onclick="Nuevo()">Crear elemento</button> 
+    <button id="Btn2" name="Btn2" onclick="Borrar()">Borrar elemento</button>
+    <button id="Btn1" name="Btn1" onclick="Anadir()">Añadir opción</button>
+    <button id="Btn1" name="Btn3" onclick="Eliminar()">Eliminar opción</button>
+    <br>
+    <label for="lab0">Nombre elemento</label>     //Aquí se introducen los nombres y valores de los elementos creados
+    <input id="lab0" name="lab0" type="text">
+    <label for="lab1">Nombre opción</label>
+    <input id="lab1" name="option1" type="text">
+    <label for="lab2">Valor opción</label>
+    <input id="lab2" name="option2" type="text">
+    <br>
+   <p> </p>
+  </div>
+ </body>
+</html>
