@@ -1,0 +1,249 @@
+Memoria Ejercicio Final
+Construcción de sistema de creación dinámica de formularios con JavaScript
+
+1. Introducción
+
+El principal objetivo de este módulo de pre-work es el aprendizaje del lenguaje JavaScript y cómo puede usarse para complementar las capacidades de HTML.
+
+Para este proyecto, se va a crear un sistema que permita crear formularios simples de forma dinámica, mediante el uso de botones e inputs. Podrán crearse inputs de texto, inputs de número, listas de selección y conjuntos de opciones que puedan o no excluirse mutuamente.
+
+A lo largo de la presente memoria, se mostrarán el proyecto desarrollado, se identificarán los elementos clave y se terminará con una conclusión sobre el ejercicio.
+
+2. Procedimiento
+2.1. Documento HTML
+El documento se ha iniciado mediante la construcción de la base HTML sobre la que descansa todo el documento, como se muestra a continuación:
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="utf-8">
+   <title>Formulario</title>
+ </head>
+ <body>
+   <div id="tgtDiv">                              //Empieza el texto inicial
+    <label for="Tipo">Tipo de elemento</label>
+    <select id="Tipo">                            //Opciones para trabajar
+     <option value="1">Texto</option>
+     <option value="2">Número</option>
+     <option value="3">Email</option>
+     <option value="4">Lista</option>
+     <option value="5">Opciones no exclusivas</option>
+     <option value="6">Opciones exclusivas</option>
+     <option value="7">Botón</option>
+    </select>                                     //Debajo están los cuatro botones usados
+    <button id="Btn0" name="Btn0" onclick="Nuevo()">Crear elemento</button> 
+    <button id="Btn2" name="Btn2" onclick="Borrar()">Borrar elemento</button>
+    <button id="Btn1" name="Btn1" onclick="Anadir()">Añadir opción</button>
+    <button id="Btn1" name="Btn3" onclick="Eliminar()">Eliminar opción</button>
+    <br>
+    <label for="lab0">Nombre elemento</label>     //Aquí se introducen los nombres y valores de los elementos creados
+    <input id="lab0" name="lab0" type="text">
+    <label for="lab1">Nombre opción</label>
+    <input id="lab1" name="option1" type="text">
+    <label for="lab2">Valor opción</label>
+    <input id="lab2" name="option2" type="text">
+    <br>
+   <p> </p>
+  </div>
+ </body>
+</html>
+Aquí se observan ya los elementos que forman la interfaz del usuario para crear el formulario.
+
+En primer lugar, tenemos la lista de opciones, que contiene las seis opciones antes indicadas (Campo de texto, Campo de texto numérico, Campo de texto para correo electrónico, Lista de opciones, Opciones no exclusivas y Opciones exclusivas) además de una opción extra que crea botones.
+
+Luego se encuentran los cuatro botones que se utilizarán en la creación del formulario: el primero para crear elementos nuevos, el segundo para borrar elementos, el tercero para añadir opciones a listas y grupos de opciones y el cuarto para eliminar opciones.
+
+Finalmente, se encuentran tres inputs que se utilizan para dar nombre a los elementos y opciones, además de dar valores a dichas opciones.
+
+2.2. Script
+Dentro del cuerpo del documento HTML, se incluye el script en lenguaje JavaScript que determina cómo funciona la creación de objetos. Se explicará el script por partes.
+
+    var f = document.createElement("form");      //Crea el formulario
+    f.setAttribute('method',"post");             //Y asigna el método
+
+Aquí se inicia el formulario que se va a crear posteriormente.
+
+    function Nuevo() {                           //Crea un nuevo elemento
+     var lab0 = document.querySelector("#lab0"); //Lee los inputs
+     var lab1 = document.querySelector("#lab1");
+     var lab2 = document.querySelector("#lab2");
+     var tipo = document.querySelector("#Tipo"); //Lee el tipo de objeto a crear
+     var t = tipo.value;
+     var pHijo = document.createElement("p");    //Crea un párrafo nuevo para contener el elemento
+     pHijo.setAttribute("id","p_"+lab0.value);
+
+Aquí empieza la función Nuevo(), que sirve para crear elementos del formulario. lab0, lab1 y lab2 son los tres inputs que se encuentran en el creador de formularios, mientras que tipo permite indicar cuál es el tipo de objeto que se está creando. También se crea un elemento, pHijo, que forma un párrafo que contiene el elemento del formulario.
+
+     if(t == 1) {                                //Opción para inputs de texto
+      var i = document.createElement("input");   //Input, seguido de identificador y tipo
+      i.setAttribute("id",lab0.value);
+      i.setAttribute("type","text");
+      var l = document.createElement("label");   //Etiqueta asociada al input
+      l.setAttribute("for",lab0.value);
+      l.innerText = lab0.value + " ";
+     }
+
+Esta opción permite crear los inputs de tipo texto, dando como entrada el texto de la etiqueta que se añadirá en el primer input. createElement creará los diferentes objetos, setAttribute permite dar valor a los atributos de dichos elementos y innerText puede usarse para cambiar el texto contenido en las etiquetas.
+
+     else if(t == 2){                            //Opción para inputs numéricos
+      var i = document.createElement("input");   //Input, seguido de identificador y tipo
+      i.setAttribute("id",lab0.value);
+      i.setAttribute("type","numeric");
+      var l = document.createElement("label");   //Etiqueta asociada al input
+      l.setAttribute("for",lab0.value);
+      l.innerText = lab0.value + " ";
+     }
+
+Esta opción permite crear inputs de tipo numérico, dando como entrada el texto de la etiqueta que se añadirá en el primer input.
+
+     else if(t == 3) {                           //Opción para inputs de Correo electrónico
+      var i = document.createElement("input");   //Input, seguido de identificador y tipo
+      i.setAttribute("id",lab0.value);
+      i.setAttribute("type","text");
+      var l = document.createElement("label");   //Etiqueta asociada al input
+      l.setAttribute("for",lab0.value);
+      l.innerText = "Email ";
+     }
+
+Esta opción crea un input de tipo texto, pero enmarcado específicamente para escribir el correo electrónico.
+
+     else if(t == 4) {                            //Opción para crear lista de elementos
+      var l = document.createElement("label");    //Etiqueta de la lista
+      l.setAttribute("for",lab0.value);
+      l.innerText = lab0.value + " ";
+      var i = document.createElement("select");   //Creación de lista
+      i.setAttribute("id",lab0.value);
+      var o = document.createElement("option");   //Primera opción de la lista, con su valor y su texto
+      o.setAttribute("value",lab2.value);
+      o.innerText = lab1.value;
+      i.appendChild(o);                           //Se añade la opción a la lista
+     }
+
+Esta opción crea una lista de opciones, añadiendo ya la primera opción que contendrá la lista (si se busca que la primera opción sea vacía, es posible.
+
+     else if(t == 5 || t == 6) {                  //Opción para crear opciones no exhaustivas (checkbox) o exhaustivas (radio)
+      var l = document.createElement("label");    //Etiqueta del grupo
+      l.innerText = lab0.value + " ";
+      var i = document.createElement("input");    //Creación de input
+      i.setAttribute("name",lab0.value);
+      if(t == 5) {
+       i.setAttribute("type","checkbox");         //Asignar tipo checkbox al input
+      }
+      else if(t == 6) {
+       i.setAttribute("type","radio");            //Asignar tipo radio al input
+      }
+      i.setAttribute("value",lab2.value);
+      var l1 = document.createElement("label");   //Etiqueta asociada al input
+      l1.innerText = lab1.value;
+      l1.setAttribute("for",lab0.value + "_" + lab2.value);
+      l1.setAttribute("id","label_" + lab0.value + "_" + lab2.value);
+     }
+
+Esta opción crea un bloque que permita juntar un conjunto de opciones de tipo no exhaustivo (checkbox) o exhaustivo (radio). Dado que la estructura para los dos es idéntica salvo el identificador del tipo de opción, se utiliza la misma estructura, añadiendo solamente una estructura if-else dentro para diferenciar entre tipos y añadir la opción correcta. Los textos y valores de las opciones se introducen mediante los otros inputs en la lista.
+
+     else if(t == 7) {                            //Opción para crear botón
+      var i = document.createElement("button");   //Creación de botón
+      i.setAttribute("id","Button_"+lab0.value);
+      i.innerText = lab0.value;
+     }
+
+Esta opción crea un botón con un texto que se introduce con un input.
+
+     if(t < 7) {                                  //Se añade etiqueta previa para todos salvo el botón
+      pHijo.appendChild(l);
+     }
+     pHijo.appendChild(i);                        //Se añade el input
+     if(t==5 || t==6) {                           //Se añade la etiqueda de las opciones
+      pHijo.appendChild(l1);
+     }
+     f.appendChild(pHijo);                        //Se añade el objeto al archivo
+     document.getElementsByTagName('div')[0].appendChild(f);
+    }
+
+Aquí se añaden las etiquetas y los elementos al párrafo, que luego se añade también al documento HTML.
+
+    function Borrar() {                           //Función para borrar un elemento
+     var lab0 = document.querySelector("#lab0");
+     var pHijo = document.getElementById("p_"+lab0.value);
+     pHijo.remove();
+    }
+
+Esta función permite eliminar un elemento completo dándole como único input el nombre de dicho elemento.
+
+    function Anadir() {                           //Función para añadir opciones a la lista o a opciones (no) exhaustivas
+     var lab0 = document.querySelector("#lab0");  //Tomamos el elemento concreto
+     var lab1 = document.querySelector("#lab1");
+     var lab2 = document.querySelector("#lab2");
+     var tipo = document.querySelector("#Tipo");
+     var pHijo = document.getElementById("p_"+lab0.value);
+     var t = tipo.value;
+
+Esta función sirve para añadir opciones a una lista o a los grupos de opciones (t == 4, 5 o 6). De manera similar a la función para crear elementos, lee todos los inputs, y toma el primero para escoger el párrafo donde se encuentra el elemento que se quiere modificar.
+
+     if(t < 4 || t > 6) {                         //Si no es un elemento que admita opciones, no lo hace
+       alert("Opcion incorrecta");
+     }
+
+Si la opción que se escoge al intentar añadir opciones no es una de las correspondientes, el sistema dará automáticamente un error.
+
+     else if(t == 4) {                            //Añadir opciones a lista
+      var i = document.getElementById(lab0.value);
+      var o = document.createElement("option");
+      o.setAttribute("value",lab2.value);
+      o.innerText = lab1.value;
+      i.add(o);
+     }
+     else if(t == 5 || t == 6) {                  //Añadir opciones a opciones no exhaustivas o exhaustivas
+      var o = document.createElement("input");
+      o.setAttribute("name",lab0.value);
+      o.setAttribute("id",lab0.value + "_" + lab2.value);
+      if(t == 5) {
+       o.setAttribute("type","checkbox");
+      }
+      else if(t == 6) {
+       o.setAttribute("type","radio");
+      }
+      o.setAttribute("value",lab2.value);
+      var l = document.createElement("label");
+      l.innerText = lab1.value;
+      l.setAttribute("for",lab0.value + "_" + lab2.value);
+      l.setAttribute("id","label_" + lab0.value + "_" + lab2.value);
+      pHijo.appendChild(o);
+      pHijo.appendChild(l);
+     }
+    }
+
+Aquí, se añadirán las nuevas opciones en función del tipo de grupo que se esté usando. Para la lista, se utiliza la función add, que permite añadir las opciones de manera directa, mientras que para los grupos de opciones se añade un nuevo input del mismo tipo junto con su etiqueta correspondiente.
+
+    function Eliminar() {                         //Eliminar opciones
+     var lab0 = document.querySelector("#lab0");  //Tomamos el elemento concreto
+     var lab1 = document.querySelector("#lab1");
+     var lab2 = document.querySelector("#lab2");
+     var tipo = document.querySelector("#Tipo");
+     var pHijo = document.getElementById("p_"+lab0.value);
+     var t = tipo.value;
+     if(t < 4 || t > 6) {
+       alert("Opcion incorrecta");
+     }
+     else if(t == 4) {                            //Eliminar opciones de lista
+      var i = document.getElementById(lab0.value);
+      var len = i.options.length;
+      for (var j=0; j < len; j++) {
+       if(i.options[j].value == lab2.value) {
+        i.remove(j);
+        break;
+       }
+      }
+     }
+     else if(t == 5 || t == 6) {                  //Eliminar opciones (no) exhaustivas
+      var o = document.getElementById(lab0.value + "_" + lab2.value);
+      var l = document.getElementById("label_" + lab0.value + "_" + lab2.value);
+      pHijo.removeChild(o);
+      pHijo.removeChild(l);
+     }
+    }
+
+Finalmente, esta última función permite eliminar opciones de las listas y grupos de opciones indicados. El tratamiento que se da a un tipo u otro cambia debido a las diferencias, pero son un reflejo del formato usado en la función Añadir anteriormente mostrada.
+
+3. Conclusión
+
+El resultado final es un documento HTML que permite crear formularios de manera rápida y sencilla. El formulario creado puede contener elementos de diferentes tipos (desde cuadros de texto hasta listas de opciones) que también pueden ser modificados y eliminados con el generador. Esto es posible gracias al uso de JavaScript, que permite modificar el documento HTML de manera directa con el uso de funciones asociadas a eventos. Sin embargo, este elemento queda incompleto debido a la falta de un método que sirva para guardar el formulario con un botón, y además carece de un método para añadir una acción al botón de emisión. El formulario obtenido debe ser modificado manualmente posteriormente para poder obtener el resultado esperado.
