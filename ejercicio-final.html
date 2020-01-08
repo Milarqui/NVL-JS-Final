@@ -51,24 +51,17 @@
       o.innerText = lab1.value;
       i.appendChild(o);                           //Se añade la opción a la lista
      }
-     else if(t == 5) {                            //Opción para crear opciones no exhaustivas (checkbox)
+     else if(t == 5 || t == 6) {                  //Opción para crear opciones no exhaustivas (checkbox) o exhaustivas (radio)
       var l = document.createElement("label");    //Etiqueta del grupo
       l.innerText = lab0.value + " ";
       var i = document.createElement("input");    //Creación de input
       i.setAttribute("name",lab0.value);
-      i.setAttribute("type","checkbox");          //Asignar tipo checkbox al input
-      i.setAttribute("value",lab2.value);
-      var l1 = document.createElement("label");   //Etiqueta asociada al input
-      l1.innerText = lab1.value;
-      l1.setAttribute("for",lab0.value + "_" + lab2.value);
-      l1.setAttribute("id","label_" + lab0.value + "_" + lab2.value);
-     }
-     else if(t == 6) {                            //Opción para crear opciones exhaustivas (radio)
-      var l = document.createElement("label");    //Etiqueta del grupo
-      l.innerText = lab0.value + " ";
-      var i = document.createElement("input");    //Creación de input
-      i.setAttribute("name",lab0.value);
-      i.setAttribute("type","radio");             //Asignar tipo radio al input
+      if(t == 5) {
+       i.setAttribute("type","checkbox");         //Asignar tipo checkbox al input
+      }
+      else if(t == 6) {
+       i.setAttribute("type","radio");            //Asignar tipo radio al input
+      }
       i.setAttribute("value",lab2.value);
       var l1 = document.createElement("label");   //Etiqueta asociada al input
       l1.innerText = lab1.value;
@@ -77,7 +70,7 @@
      }
      else if(t == 7) {                            //Opción para crear botón
       var i = document.createElement("button");   //Creación de botón
-      i.setAttribute("id","Button");
+      i.setAttribute("id","Button_"+lab0.value);
       i.innerText = lab0.value;
      }
      if(t < 7) {                                  //Se añade etiqueta previa para todos salvo el botón
@@ -112,24 +105,16 @@
       o.innerText = lab1.value;
       i.add(o);
      }
-     else if(t == 5) {                            //Añadir opciones a opciones no exhaustivas
+     else if(t == 5 || t == 6) {                  //Añadir opciones a opciones no exhaustivas o exhaustivas
       var o = document.createElement("input");
       o.setAttribute("name",lab0.value);
       o.setAttribute("id",lab0.value + "_" + lab2.value);
-      o.setAttribute("type","checkbox");
-      o.setAttribute("value",lab2.value);
-      var l = document.createElement("label");
-      l.innerText = lab1.value;
-      l.setAttribute("for",lab0.value + "_" + lab2.value);
-      l.setAttribute("id","label_" + lab0.value + "_" + lab2.value);
-      pHijo.appendChild(o);
-      pHijo.appendChild(l);
-     }
-     else if(t == 6) {                            //Añadir opciones a opciones exhaustivas
-      var o = document.createElement("input");
-      o.setAttribute("name",lab0.value);
-      o.setAttribute("id",lab0.value + "_" + lab2.value);
-      o.setAttribute("type","radio");
+      if(t == 5) {
+       o.setAttribute("type","checkbox");
+      }
+      else if(t == 6) {
+       o.setAttribute("type","radio");
+      }
       o.setAttribute("value",lab2.value);
       var l = document.createElement("label");
       l.innerText = lab1.value;
